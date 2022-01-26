@@ -16,14 +16,11 @@ def updatehash(*args):
 class Block():
     '''Block Class'''
 
-    data = None
-    hash = None
-    nonce = 0
-    previous_hash = "0" * 64
-
-    def __init__(self, data, number=0):
+    def __init__(self, number=0, previous_hash='0'*64, data=None, nonce=0):
         self.data = data
         self.number = number
+        self.previous_hash = previous_hash
+        self.nonce = nonce
 
     def hash(self):
         return updatehash(self.previous_hash, self.number, self.data, self.nonce)
@@ -37,8 +34,8 @@ class Blockchain():
 
     difficulty = 4
 
-    def __init__(self, chain=[]):
-        self.chain = chain
+    def __init__(self):
+        self.chain = []
     
     def add(self, block):
         self.chain.append(block)
@@ -61,7 +58,7 @@ class Blockchain():
     def is_valid(self):
         for i in range(1, len(self.chain)):
             _previous = self.chain[i].previous_hash
-            _current = self.chain[i-1].hash()
+            _current = self.chain[i-1].hash()   
 
             if _previous != _current or _current[:self.difficulty] != '0' * self.difficulty:
                 return False
@@ -70,16 +67,7 @@ class Blockchain():
 
 
 def main():
-    blockchain = Blockchain()
-    database = ['hellow world', 'whats up', 'hello', 'bye']
-
-    for num, data in enumerate(database):
-        blockchain.mine(Block(data, num+1))
-
-    for block in blockchain.chain:
-        print(block)
-
-    print(blockchain.is_valid())
+    pass
 
 if __name__ == '__main__':
     main()
